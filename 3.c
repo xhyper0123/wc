@@ -1,0 +1,16 @@
+clc;
+clear all;
+H =2/60;
+GOS =0.01;
+C1 =57;
+A =44.2;
+calls1 =1326;
+C2 =C1 /3;
+calls2 =336;
+Ns1 =3;
+capacity = Ns1 * calls2 ;
+dif= calls1 - capacity ;
+percentdif =( dif/ calls1 )*100;
+printf('\n cell capacity of uinsectored system=0.0%f',calls1);
+printf('\n cell capacity of 120 degree sectored system=0.0%f calls/hours',capacity);
+printf('\n decrease in cell capacity of 120 degree sectored system=0.0%f calls/hours',percentdif);
