@@ -49,7 +49,8 @@ figure(5)
 stem(Bpsk_demodulated_data,'rx');
 grid on;xlabel('data points');
 ylabel('received data phase representation');
-title('Received Data "X"')clc;
+title('Received Data "X"')
+clc;
 clear all;
 close all;
 DATA_pattern=randi([0,1],1,4);
