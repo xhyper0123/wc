@@ -1,7 +1,7 @@
 clc;
 clear all;
 close all;
-M = 2; 
+M = 4; 
 no_of_data_points = 64; 
 block_size = 8; 
 cp_len = ceil(0.1*block_size); 
