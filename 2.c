@@ -1,83 +1,73 @@
-clc;
-clear all;
-close all;
-d=1:10:1000;
+d=0:100:1000;
 while(1)
- Model_Type=input('Enter Propagation model Type:-1:Free space model\n 2:Two-ray model\n
-3:Okumura model\n 4: Hata model\n 5:exit\n');
-
- if Model_Type == 1
- fc=input('Enter the operating frequency');
- Gt=input('Enter the transmitting antenna gain');
- Gr=input('Enter the receiving antenna gain');
- pt=input('Enter the Transmitted Power in watts');
- lamda=3*10^8/fc;
- recieved_power_FSM=10*log10(pt)+10*log10(Gt*Gr)-20*log10((4*pi*d/lamda));
- figure(1);
- plot(d,recieved_power_FSM);
- title(‘Free space channel model');
- ylabel('Received power in dB--->');
- xlabel('Distance in Km--->');
- elseif Model_Type == 2
- fc=input('Enter the operating frequency');
- Gt=input('Enter the transmitting antenna gain');
- Gr=input('Enter the receiving antenna gain');
- pt=input('Enter the Transmitted Power in watts');
- ht=input('Enter the hight of transmitting antenna');
-hr=input('Enter the hight of receiving antenna');
-
- received_power_TRM=10*log10(pt)+10*log10(Gt*Gr)+20*log10(ht*hr)-40*log10(d);
- figure(2);
- plot(d,received_power_TRM);
- title('Two-Ray channel model');
- ylabel('Received power in dB--->');
- xlabel('Distance in Km--->');
- elseif Model_Type == 3
- fc=input('Enter the operating frequency(Range:150-1500MHz)');
- Gt=input('Enter the transmitting antenna gain');
- Gr=input('Enter the receiving antenna gain');
- pt=input('Enter the Transmitted Power in watts');
- ht=input('Enter the hight of transmitting antenna(range applicable:30-100m)');
- hr=input('Enter the hight of receiving antenna(applicable range:3-10m)');
- A=input('Enter the median attenuation(Applicable range: 15-60dB'));
- GAREA=input('Enter the Gain from Environment(applicable range:5-30dB)');
- lamda=3*10^8/fc;
-Ght=20*log10(ht/200);
- if hr<=3
- Ghr=10*log10(hr/3);
- else
- Ghr=20*log10(hr/3);
- end
- received_power_OKM=10*log10(pt)+Ght+Ghr+10*log10(GAREA)-
-20*log10((4*pi*d/lamda))-A;
- figure(3);
- plot(d,received_OKM);
- title('Received_power Vs Distance in Okumura channel model');
- ylabel('Received power in dB--->');
- xlabel('Distance in Km--->');
- elseif Model_Type==4
- fc=input('Enter the operating frequency(Range:150-1500MHz)');
- Gt=input('Enter the transmitting antenna gain');
- Gr=input('Enter the receiving antenna gain');
- pt=input('Enter the Transmitted Power in watts');
- ht=input('Enter the hight of transmitting antenna');
- hr=input('Enter the hight of receiving antenna');
- K=input('Enter the value of K(35.94 (countryside) to 40.94 (desert)');
- ahr=3.2*(log10(11.75*hr))^2-4.97;
- received_HM_Urban=10*log10(pt)+10*log10(Gt)+10*log10(Gr)-(69.55+26.16*log10(fc)-
-13.82*log10(ht)-ahr+(44.9-6.55*log10(ht))*log10(d));
- received_HM_Suburban=received_HM_Urban-2*(log10(fc/28))^2-5.4;
- received_HM_Rural=received_HM_Urban-4.78*(log10(fc))^2 + 18.33*log10(fc)-K;
- figure(4);
- plot(d,received_HM_Urban,'r',d,received_HM_Suburban,'b',d,received_HM_Rural,'g');
- title('Received_power Vs Distance in Hata channel model');
-ylabel('Received power in dB--->');
- xlabel('Distance in Km--->');
- legend('recieved_HM_Urban','recieved_HM_Suburban','recieved_HM_Rural');
- elseif Model_Type==5
- break;
- else
-
- disp('Enter the right choice');
- end
+    select=input('enter a number from 1-4: 1-okumura model, 2-hata model, 3-log normal shadowing, 4-exit:');
+    if select==1
+        disp('okumura model');
+        f=input('enter frequency from 150MHz to 1920MHz:');
+        c=3*10^8;
+        ht=input('enter transmitter height from 30-1000m:');
+        hr=input('enter reciever hright from 1-10m:');
+        ga=20;
+        a=20;
+        lf=10*log10((4*pi*d).^2)./(((c/f)^2));
+        gt=20*log10(ht/200);
+        if hr<=3
+            gr=10*log10(hr/3);
+        else
+            gr=20*log10(hr/3);
+        end
+        L50=lf+a-gt-gr-ga;
+        figure(1);
+        plot(d,L50);
+        xlabel('distance');
+        ylabel('L50');
+        title('okumura model');
+    elseif select==2
+        disp('hata model');
+        fc=input('enter frequency ranging between 150Mhz-1500Mhz:');
+        ht=input('enter transmitted height from 30-200m:');
+        hr=input('enter reciever height from 1-10m:');
+        if fc<=300*10^6
+        a(hr)=8.29*((log(1.54*hr))^2)-1.1;
+        else
+        a(hr)=3.2*((log(11.75*hr))^2)-4.97;
+        end
+        Lu=69.55+26.16*log10(fc)-13.82*log10(ht)-a(hr)+(44.9-(6.55*log10(ht))).*log10(d);
+        Ls=Lu-2*((log10(fc/28))^2)-5.4;
+        Lr=Lu-4.78*((log10(fc))^2)+18.33*(log10(fc))-40.98;
+        figure(2);
+        plot(d,Lu,'r',d,Ls,'b',d,Lr,'m');
+        xlabel('distance');
+        ylabel('path loss');
+        title('hata model');
+    elseif select==3
+        disp('log normal shadowing');
+        pt=input('enter transmitter power:');
+        gt=1;
+        gr=1;
+        w=input('enter wavelength value:');
+        do=0:50:500
+        x=4
+        n=2
+        pr=pt*gt*gr*(w^2)./(((4*pi)^2)*(d.^2));
+        pl_do=10*(pt./pr);
+        pl_d=pl_do+10*n*log10(d./do)+x;
+        figure(3);
+        plot(d,pl_d);
+        xlabel('distance');
+        ylabel('path loss');
+        title('log normal shadowing');
+    elseif select==4
+        break;
+    else
+        disp('enter right choice:');
+    end
 end
+
+     
+        
+       
+        
+        
+  
+
