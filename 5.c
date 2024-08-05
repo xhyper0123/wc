@@ -4,7 +4,7 @@ PCM=randi([0,1],24,signal);
 figure(1);
 for i=1:24
     subplot(24,1,i);
-    %stem(pcm(i,:));
+    stem(pcm(i,:));
     title('pcm signal');
 end
 xlabel('bits');
