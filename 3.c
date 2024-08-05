@@ -10,7 +10,7 @@ disp('num of base station after cell splitting');
 disp(b2);
 t2=b2*n1;
 disp('total num of channels after cell splitting');
-disp(b2);
+disp(t2);
 disp('cell sectoring');
 c1=input('enter number of trafic channels per cells');
 call1=input('enter num of calls/hr for c1');
