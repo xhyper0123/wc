@@ -9,7 +9,8 @@ while(1)
         hr=input('enter reciever hright from 1-10m:');
         ga=20;
         a=20;
-        lf=10*log10((4*pi*d).^2)./(((c/f)^2));
+        w=f/c;
+        lf=10*log10(((4*pi.*d).^2)/(w^2));
         gt=20*log10(ht/200);
         if hr<=3
             gr=10*log10(hr/3);
@@ -34,7 +35,7 @@ while(1)
         end
         Lu=69.55+26.16*log10(fc)-13.82*log10(ht)-a(hr)+(44.9-(6.55*log10(ht))).*log10(d);
         Ls=Lu-2*((log10(fc/28))^2)-5.4;
-        Lr=Lu-4.78*((log10(fc))^2)+18.33*(log10(fc))-40.98;
+        Lr=Lu-4.78*((log10(fc))^2)+18.33*(log10(fc))-40.95;
         figure(2);
         plot(d,Lu,'r',d,Ls,'b',d,Lr,'m');
         xlabel('distance');
@@ -46,12 +47,13 @@ while(1)
         gt=1;
         gr=1;
         w=input('enter wavelength value:');
-        do=0:50:500
+        d=0:50:500
         x=4
         n=2
-        pr=pt*gt*gr*(w^2)./(((4*pi)^2)*(d.^2));
-        pl_do=10*(pt./pr);
-        pl_d=pl_do+10*n*log10(d./do)+x;
+        d0=100;
+        pr=pt*gt*gr*(w^2)./((4*pi.*d).^2);
+        pl_d0=10*log10(pt./pr);
+        pl_d=pl_d0+10*n*log10(d./d0)+x;
         figure(3);
         plot(d,pl_d);
         xlabel('distance');
@@ -63,11 +65,3 @@ while(1)
         disp('enter right choice:');
     end
 end
-
-     
-        
-       
-        
-        
-  
-
