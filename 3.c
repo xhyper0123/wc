@@ -10,6 +10,7 @@ disp('num of base station after cell splitting');
 disp(b2);
 t2=b2*n1;
 disp('total num of channels after cell splitting');
+
 disp(t2);
 disp('cell sectoring');
 c1=input('enter number of trafic channels per cells');
@@ -23,6 +24,6 @@ percentdif=(dif/call1)*100;
 disp('cell capacity of unsectored system');
 disp(call1);
 disp('cell capacity of 120 degree system');
-disp('capacity');
+disp(capacity);
 disp('decrease in cell capacity');
-disp('percentdif');
+disp(percentdif);
